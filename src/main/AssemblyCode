@@ -1,0 +1,57 @@
+for (x from 0 to 19) {
+    for (y from 0 to 19) {
+        // Processing border pixel
+        if (x ==0) { out_image (x,y) =0; continue ; }
+        if (y ==0) { out_image (x,y) =0; continue ; }
+        if (x ==19) { out_image (x,y)=0; continue ; }
+        if (y ==19) { out_image (x,y)=0; continue ; }
+        // Processing inner pixel
+        if ( in_image (x,y) ==0) {
+            // Black pixel
+            out_image (x,y) =0;
+        } else {
+            // White pixel , checking neighboring pixels
+            if ( in_image (x -1,y) ==0 or
+                in_image (x+1,y)==0 or
+                in_image (x,y -1) ==0 or
+                in_image (x,y +1) ==0) {
+                // Erode
+                out_image (x,y) =0;
+            } else {
+                // Do not erode
+                out_image (x,y) =255;
+            }
+        }
+    }
+}
+
+// Assembly Code //
+// // Linje 1: loop 1
+1. LI R1 0                  // X = 0
+2. JGT 203 R1 19            // If X > 19 loop ended jump to __
+    // // Linje 2: loop 2
+    3. LI R2 0              // Y = 0
+    4. JGT R2 19            // If Y > 19 loop ended jump to __
+        // // Linje 4-7 (If statements)
+        5. JGT 199 R1 0      // If X != 0 jump to
+            6. MULT R0 20 R2        // 20*y
+            7. ADD R0 R0 R1         // x+20*y
+            8. ADD R0 400           // x+20*y+400
+            9. SD 0 R0            /// Save 0 to memory(R0)= memory(x+20*y+400)
+            10. JR 199
+
+        6. JGT 199 R2 0      // If Y != 0 jump to next
+        7. JGT 199 R1 0     // If X = 19
+        8. JGT 199 R2 0     // If Y = 19
+        // Næste if
+        // // Linje 9-11 (if)
+        9.
+        10.
+        // // Linje 12-20 (else)
+
+    // Ending of loop where we increment
+    199. ADD R2 R2 1        // Add 1 to Y and save it in Y
+    200. JR 3               // Jumps back to beginning of loop 2
+201. ADD R1 R1 1            // Add 1 to X and save it in X
+202. JR 1                   // Jumps back to beginning of loop 1
+203. END                    // Finished loops
