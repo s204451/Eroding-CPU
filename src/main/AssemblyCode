@@ -25,33 +25,49 @@ for (x from 0 to 19) {
     }
 }
 
-// Assembly Code //
-// // Linje 1: loop 1
-1. LI R1 0                  // X = 0
-2. JGT 203 R1 19            // If X > 19 loop ended jump to __
+1. LI R1 0                          // X = 0
+2. JGT 35 R1 19                     // If X > 19 loop ended jump to __
     // // Linje 2: loop 2
-    3. LI R2 0              // Y = 0
-    4. JGT R2 19            // If Y > 19 loop ended jump to __
-        // // Linje 4-7 (If statements)
-        5. JGT 199 R1 0      // If X != 0 jump to
-            6. MULT R0 20 R2        // 20*y
-            7. ADD R0 R0 R1         // x+20*y
-            8. ADD R0 400           // x+20*y+400
-            9. SD 0 R0            /// Save 0 to memory(R0)= memory(x+20*y+400)
-            10. JR 199
+    3. LI R2 0                      // Y = 0
+    4. JGT 33 R2 19                 // If Y > 19 loop ended jump to __
+        // Finding the out image and in image
+        5. MULT R0 20 R2            // 20*y
+        6. ADD R0 R0 R1             // R0 = x+20*y
+        7. LI R3 R0                 // R3 = R0 = in_image address
+        8. ADD R3 400               // R3 = x+20*y+400 = out_image address
+        9. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
+        // // Linje 4-11 (If statements)
+        10. JEQ 16 R1 0             // If X == 0 jump to
+        11. JEQ 16 R2 0             // If Y == 0 jump to next
+        12. JEQ 16 R1 19            // If X == 19
+        13. JGT 16 R2 19            // If Y == 19
+        14. JGT 16 R4 0             // If in_image(x,y) =0
+        15. JR 18                   // Skip the next 2 lines if none of the above are true
+            16. SD 0 R3             // Save 0 to memory(R3)= memory(out_image)
+            17. JR 31               // continue
+        // // Linje (12-19) else
+        18. SUB R0 R0 1             // in_image(x-1,y)
+        19. LD R4 R0                // Stores the value of R0 in R4
+        20. JEQ 16 R4 0             // if (in_image(x-1,y) == 0)
 
-        6. JGT 199 R2 0      // If Y != 0 jump to next
-        7. JGT 199 R1 0     // If X = 19
-        8. JGT 199 R2 0     // If Y = 19
-        // Næste if
-        // // Linje 9-11 (if)
-        9.
-        10.
+        21. ADD R0 R0 2             // in_image(x+1,y)
+        22. LD R4 R0                // Stores the value of R0 in R4
+        23. JEQ 16 R4 0             // if (in_image(x+1,y) == 0)
+
+        24. SUB R0 R0 21            // in_image(x,y-1)
+        25. LD R4 R0                // Stores the value of R0 in R4
+        26. JEQ 16 R4 0             // if (in_image(x,y-1) == 0)
+
+        27. ADD R0 R0 40            // in_image(x,y+1)
+        28. LD R4 R0                // Stores the value of R0 in R4
+        29. JEQ 16 R4 0             // if (in_image(x,y+1) == 0)
+
         // // Linje 12-20 (else)
+        30. SD 255 R3               // Save 255 to memory(R3)= memory(out_image)
 
     // Ending of loop where we increment
-    199. ADD R2 R2 1        // Add 1 to Y and save it in Y
-    200. JR 3               // Jumps back to beginning of loop 2
-201. ADD R1 R1 1            // Add 1 to X and save it in X
-202. JR 1                   // Jumps back to beginning of loop 1
-203. END                    // Finished loops
+    31. ADD R2 R2 1                 // Add 1 to Y and save it in Y
+    32. JR 4                        // Jumps back to beginning of loop 2
+33. ADD R1 R1 1                     // Add 1 to X and save it in X
+34. JR 2                            // Jumps back to beginning of loop 1
+35. END                             // Finished loops
