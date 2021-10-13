@@ -34,7 +34,7 @@ for (x from 0 to 19) {
         5. MULT R0 20 R2            // 20*y
         6. ADD R0 R0 R1             // R0 = x+20*y
         7. LI R3 R0                 // R3 = R0 = in_image address
-        8. ADD R3 400               // R3 = x+20*y+400 = out_image address
+        8. ADD R3 R3 400               // R3 = x+20*y+400 = out_image address
         9. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
         // // Linje 4-11 (If statements)
         10. JEQ 16 R1 0             // If X == 0 jump to
@@ -70,4 +70,46 @@ for (x from 0 to 19) {
     32. JR 4                        // Jumps back to beginning of loop 2
 33. ADD R1 R1 1                     // Add 1 to X and save it in X
 34. JR 2                            // Jumps back to beginning of loop 1
-35. END                             // Finished loops
+35. END                             // Finished loopss
+
+
+
+// TASK 4 //
+
+*********** LIST OF INSTRUCTIONS **********
+// Arithmetic
+Addition                    ADD R0 R1 R2
+Subtraction                 SUB R0 R1 R2
+Multiplication              MULT R0 R1 R2
+Load immediate              LI R1 R2
+Load data                   LD R1 R2
+Store data                  SD R1 R2
+
+// Jump type
+Jump                        JR 12
+
+// Jump Comparison Type
+Jump if greater than        JGT 10 R1 R2
+Jump if equal               JEQ 10 R1 R2
+
+End program                 END
+*******************************************
+
+
+// Nummereret med 2^3
+// R0(9) R1(5) R2(5) R3(10) R4(8)
+
+// LI R0 R1
+// R0 = R1
+
+// LI R0 100
+// R0 = 100
+// 000010 (LI) 000 (R0) 001 (R1) 010101010101010101
+// 000010 (LI) 000 (R0) 001 (100) 000000000001100 (100)
+
+R(Register Type): Opcode(4) RorV(1) R(3) Arithmetic(18)
+I(Immediate Type): Opcode(4) ROrImmediate(1) R(3) Immediate(18)
+J(Jump Type): Opcode(4) Target(28)
+J2(Jump Comparison Type 2): Opcode(4) R1(3) R2(3) Target(22)
+
+// TODO: spørge hjælpelærerene ROrImmediate for at skelne mellem register/værdi
