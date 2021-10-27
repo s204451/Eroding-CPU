@@ -31,11 +31,13 @@ for (x from 0 to 19) {
     3. LI R2 0                      // Y = 0
     4. JGT 33 R2 19                 // If Y > 19 loop ended jump to __
         // Finding the out image and in image
-        5. MULT R0 20 R2            // 20*y
-        6. ADD R0 R0 R1             // R0 = x+20*y
-        7. LI R3 R0                 // R3 = R0 = in_image address
-        8. ADD R3 R3 400               // R3 = x+20*y+400 = out_image address
-        9. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
+        5. LI R0 20                 // R0 = 20
+        6. MULT R0 R2               // R0 = 20*y
+        7. ADD R0 R1                // R0 = x+20*y
+        8. LI R3 R0                 // R3 = R0 = in_image address
+        9. LI R5 400
+        10. ADD R3 R5               // R3 = x+20*y+400 = out_image address
+        11. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
         // // Linje 4-11 (If statements)
         10. JEQ 16 R1 0             // If X == 0 jump to
         11. JEQ 16 R2 0             // If Y == 0 jump to next
@@ -46,13 +48,15 @@ for (x from 0 to 19) {
             16. SD 0 R3             // Save 0 to memory(R3)= memory(out_image)
             17. JR 31               // continue
         // // Linje (12-19) else
-        18. SUB R0 R0 1             // in_image(x-1,y)
-        19. LD R4 R0                // Stores the value of R0 in R4
-        20. JEQ 16 R4 0             // if (in_image(x-1,y) == 0)
+        22. LI R5 1
+        23. SUB R0 R5               // in_image(x-1,y)
+        24. LD R4 R0                // Stores the value of memory(R0) in R4
+        25. JEQ 19 R4 0             // if (in_image(x-1,y) == 0)
 
-        21. ADD R0 R0 2             // in_image(x+1,y)
-        22. LD R4 R0                // Stores the value of R0 in R4
-        23. JEQ 16 R4 0             // if (in_image(x+1,y) == 0)
+        26. LI R5 2
+        27. ADD R0 R5               // in_image(x+1,y)
+        28. LD R4 R0                // Stores the value of memory(R0) in R4
+        29. JEQ 19 R4 0             // if (in_image(x+1,y) == 0)
 
         24. SUB R0 R0 21            // in_image(x,y-1)
         25. LD R4 R0                // Stores the value of R0 in R4
@@ -95,9 +99,11 @@ Jump if equal               JEQ 10 R1 R2
 End program                 END
 *******************************************
 
+// TASK 4: //
 
 // Nummereret med 2^3
-// R0(9) R1(5) R2(5) R3(10) R4(8)
+// R0(9) R1(5) R2(5) R3(10) R4(8) R5(9)
+
 
 // LI R0 R1
 // R0 = R1
@@ -107,9 +113,12 @@ End program                 END
 // 000010 (LI) 000 (R0) 001 (R1) 010101010101010101
 // 000010 (LI) 000 (R0) 001 (100) 000000000001100 (100)
 
-R(Register Type): Opcode(4) RorV(1) R(3) Arithmetic(18)
-I(Immediate Type): Opcode(4) ROrImmediate(1) R(3) Immediate(18)
-J(Jump Type): Opcode(4) Target(28)
-J2(Jump Comparison Type 2): Opcode(4) R1(3) R2(3) Target(22)
 
-// TODO: spørge hjælpelærerene ROrImmediate for at skelne mellem register/værdi
+How is the 32-bit instruction divided:
+Instruction type: Opcode(4) Instructions(28)
+Depending on the opcode the instruction fields are divided as follows
+    R(Register):          R(3)          R(3)        Nothing(22)
+    I(Immediate):         R(3)          Immediate(25)
+    J(Jump):              Nothing(3)    Nothing(3)  Target(15)
+    JC(Jump Conditional): R1(3)         R2(3)       Target(15)
+    S(Store):             R(3)          R(3)        Nothing(22)
