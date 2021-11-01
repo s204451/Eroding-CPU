@@ -1,3 +1,4 @@
+
 for (x from 0 to 19) {
     for (y from 0 to 19) {
         // Processing border pixel
