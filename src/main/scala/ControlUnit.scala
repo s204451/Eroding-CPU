@@ -3,7 +3,8 @@ import chisel3.util._
 
 class ControlUnit extends Module {
   val io = IO(new Bundle {
-    //Define the module interface here (inputs/outputs)
+    val memWrite = Input(Bool())
+    val
   })
 
   //Implement this module here
