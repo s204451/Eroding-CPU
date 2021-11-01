@@ -23,13 +23,15 @@ class RegisterFile extends Module {
   val R6Reg = RegInit(0.U(32.W))
   val R7Reg = RegInit(0.U(32.W))
 
+  io.a := 0.U
+  io.b := 0.U
 
   switch(io.aSel) {
     is(0.U) {
-      io.a := R0Reg
       when (io.writeEnable) {
         R0Reg := io.writeData
       }
+      io.a := R0Reg
     }
     is(1.U) {
       io.a := R1Reg

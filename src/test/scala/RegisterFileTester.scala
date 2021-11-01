@@ -9,9 +9,38 @@ class RegisterFileTester(dut: RegisterFile) extends PeekPokeTester(dut) {
   poke(dut.io.writeEnable, false.B)
   expect(dut.io.a, 0.U)
   expect(dut.io.b, 0.U)
-  val a = dut.io.a
-  val b = dut.io.b
-  println("a: " + a + " b:" + b)
+  step(1)
+
+  poke(dut.io.aSel, 0.U)
+  poke(dut.io.bSel, 1.U)
+  poke(dut.io.writeData, 100.U)
+  poke(dut.io.writeEnable, true.B)
+  expect(dut.io.a, 0.U)
+  expect(dut.io.b, 0.U)
+  step(1)
+
+  poke(dut.io.aSel, 0.U)
+  poke(dut.io.bSel, 1.U)
+  poke(dut.io.writeData, 100.U)
+  poke(dut.io.writeEnable, false.B)
+  expect(dut.io.a, 100.U)
+  expect(dut.io.b, 0.U)
+  step(1)
+
+  poke(dut.io.aSel, 1.U)
+  poke(dut.io.bSel, 0.U)
+  poke(dut.io.writeData, 200.U)
+  poke(dut.io.writeEnable, true.B)
+  expect(dut.io.a, 0.U)
+  expect(dut.io.b, 100.U)
+  step(1)
+
+  poke(dut.io.aSel, 1.U)
+  poke(dut.io.bSel, 0.U)
+  poke(dut.io.writeData, 200.U)
+  poke(dut.io.writeEnable, false.B)
+  expect(dut.io.a, 200.U)
+  expect(dut.io.b, 100.U)
   step(1)
 
 }
