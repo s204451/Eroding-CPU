@@ -14,5 +14,15 @@ class ALU extends Module {
   io.result := 0.U
 
   //Implement this module here
-
+  when (io.sel === 1.U) { // Add
+    io.result := io.operand1 + io.operand2
+  } .elsewhen (io.sel === 2.U) { // Sub
+    io.result := io.operand1 - io.operand2
+  } .elsewhen (io.sel === 3.U) { // Mult
+    io.result := io.operand1 * io.operand2
+  } .elsewhen(io.sel === 4.U) { // JEQ
+    io.compResult := io.operand1 - io.operand2 === 0.U
+  } .elsewhen(io.sel === 5.U){ // JGT
+    io.compResult := (io.operand1 - io.operand2) > 0.U
+  }
 }

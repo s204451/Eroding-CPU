@@ -26,10 +26,10 @@ for (x from 0 to 19) {
 }
 
 1. LI R1 0                          // X = 0
-2. JGT 35 R1 19                     // If X > 19 loop ended jump to __
+2. JGT 46 R1 19                     // If X > 19 loop ended jump to __
     // // Linje 2: loop 2
     3. LI R2 0                      // Y = 0
-    4. JGT 33 R2 19                 // If Y > 19 loop ended jump to __
+    4. JGT 43 R2 19                 // If Y > 19 loop ended jump to __
         // Finding the out image and in image
         5. LI R0 20                 // R0 = 20
         6. MULT R0 R2               // R0 = 20*y
@@ -39,14 +39,15 @@ for (x from 0 to 19) {
         10. ADD R3 R5               // R3 = x+20*y+400 = out_image address
         11. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
         // // Linje 4-11 (If statements)
-        10. JEQ 16 R1 0             // If X == 0 jump to
-        11. JEQ 16 R2 0             // If Y == 0 jump to next
-        12. JEQ 16 R1 19            // If X == 19
-        13. JGT 16 R2 19            // If Y == 19
-        14. JGT 16 R4 0             // If in_image(x,y) =0
-        15. JR 18                   // Skip the next 2 lines if none of the above are true
-            16. SD 0 R3             // Save 0 to memory(R3)= memory(out_image)
-            17. JR 31               // continue
+        12. JEQ 19 R1 0             // If X == 0
+        13. JEQ 19 R2 0             // If Y == 0
+        14. JEQ 19 R1 19            // If X == 19
+        15. JGT 19 R2 19            // If Y == 19
+        17. JGT 19 R4 0             // If in_image(x,y) =0
+        18. JR 21                   // Skip the next 2 lines if none of the above are true
+            19. LI R5 0
+            20. SD R3 R5             // Save 0 to memory(R3)= memory(out_image)
+            21. JR 31               // continue
         // // Linje (12-19) else
         22. LI R5 1
         23. SUB R0 R5               // in_image(x-1,y)
@@ -67,7 +68,8 @@ for (x from 0 to 19) {
         29. JEQ 16 R4 0             // if (in_image(x,y+1) == 0)
 
         // // Linje 12-20 (else)
-        30. SD 255 R3               // Save 255 to memory(R3)= memory(out_image)
+        38. LI R5 255
+        39. SD R3 R5               // Save 255 to memory(R3)= memory(out_image)
 
     // Ending of loop where we increment
     31. ADD R2 R2 1                 // Add 1 to Y and save it in Y
