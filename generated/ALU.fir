@@ -1,0 +1,45 @@
+;buildInfoPackage: chisel3, version: 3.3.2, scalaVersion: 2.12.11, sbtVersion: 1.3.10
+circuit ALU : 
+  module ALU : 
+    input clock : Clock
+    input reset : UInt<1>
+    output io : {flip operand1 : UInt<32>, flip operand2 : UInt<32>, flip sel : UInt<3>, result : UInt<32>, compResult : UInt<1>}
+    
+    io.compResult <= UInt<1>("h00") @[ALU.scala 13:17]
+    io.result <= UInt<1>("h00") @[ALU.scala 14:13]
+    node _T = eq(io.sel, UInt<1>("h01")) @[ALU.scala 17:16]
+    when _T : @[ALU.scala 17:25]
+      node _T_1 = add(io.operand1, io.operand2) @[ALU.scala 18:30]
+      node _T_2 = tail(_T_1, 1) @[ALU.scala 18:30]
+      io.result <= _T_2 @[ALU.scala 18:15]
+      skip @[ALU.scala 17:25]
+    else : @[ALU.scala 19:32]
+      node _T_3 = eq(io.sel, UInt<2>("h02")) @[ALU.scala 19:23]
+      when _T_3 : @[ALU.scala 19:32]
+        node _T_4 = sub(io.operand1, io.operand2) @[ALU.scala 20:30]
+        node _T_5 = tail(_T_4, 1) @[ALU.scala 20:30]
+        io.result <= _T_5 @[ALU.scala 20:15]
+        skip @[ALU.scala 19:32]
+      else : @[ALU.scala 21:32]
+        node _T_6 = eq(io.sel, UInt<2>("h03")) @[ALU.scala 21:23]
+        when _T_6 : @[ALU.scala 21:32]
+          node _T_7 = mul(io.operand1, io.operand2) @[ALU.scala 22:30]
+          io.result <= _T_7 @[ALU.scala 22:15]
+          skip @[ALU.scala 21:32]
+        else : @[ALU.scala 23:31]
+          node _T_8 = eq(io.sel, UInt<3>("h04")) @[ALU.scala 23:22]
+          when _T_8 : @[ALU.scala 23:31]
+            node _T_9 = sub(io.operand1, io.operand2) @[ALU.scala 24:34]
+            node _T_10 = tail(_T_9, 1) @[ALU.scala 24:34]
+            node _T_11 = eq(_T_10, UInt<1>("h00")) @[ALU.scala 24:48]
+            io.compResult <= _T_11 @[ALU.scala 24:19]
+            skip @[ALU.scala 23:31]
+          else : @[ALU.scala 25:30]
+            node _T_12 = eq(io.sel, UInt<3>("h05")) @[ALU.scala 25:22]
+            when _T_12 : @[ALU.scala 25:30]
+              node _T_13 = sub(io.operand1, io.operand2) @[ALU.scala 26:35]
+              node _T_14 = tail(_T_13, 1) @[ALU.scala 26:35]
+              node _T_15 = gt(_T_14, UInt<1>("h00")) @[ALU.scala 26:50]
+              io.compResult <= _T_15 @[ALU.scala 26:19]
+              skip @[ALU.scala 25:30]
+    
