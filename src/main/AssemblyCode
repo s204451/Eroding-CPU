@@ -1,4 +1,3 @@
-
 for (x from 0 to 19) {
     for (y from 0 to 19) {
         // Processing border pixel
@@ -26,58 +25,64 @@ for (x from 0 to 19) {
     }
 }
 
-1. LI R1 0                          // X = 0
-2. JGT 46 R1 19                     // If X > 19 loop ended jump to __
+1. LI R6 19                         // R6 = 19
+2. LI R7 0                          // R7 = 0
+3. LI R1 0                          // X = 0
+4. JGT R1 R6 47                     // If X > 19 loop ended jump to __
     // // Linje 2: loop 2
-    3. LI R2 0                      // Y = 0
-    4. JGT 43 R2 19                 // If Y > 19 loop ended jump to __
+    5. LI R2 0                      // Y = 0
+    6. JGT R2 R6 44                 // If Y > 19 loop ended jump to __
         // Finding the out image and in image
-        5. LI R0 20                 // R0 = 20
-        6. MULT R0 R2               // R0 = 20*y
-        7. ADD R0 R1                // R0 = x+20*y
-        8. LI R3 R0                 // R3 = R0 = in_image address
-        9. LI R5 400
-        10. ADD R3 R5               // R3 = x+20*y+400 = out_image address
-        11. LD R4 R0                 // Storing the value of memory(R0 (in_image) ) in R4
+        7. LI R0 20                 // R0 = 20
+        8. MULT R0 R2               // R0 = 20*y
+        9. ADD R0 R1                // R0 = x+20*y = in_image address
+        10. LI R3 0
+        11. ADD R3 R0               // R3 = 0 + R0 = in_image address
+        12. LI R5 400
+        13. ADD R3 R5               // R3 = x+20*y+400 = out_image address
+        14. LD R4 R0                // R4 = memory(R0 (in_image) )
         // // Linje 4-11 (If statements)
-        12. JEQ 19 R1 0             // If X == 0
-        13. JEQ 19 R2 0             // If Y == 0
-        14. JEQ 19 R1 19            // If X == 19
-        15. JGT 19 R2 19            // If Y == 19
-        17. JGT 19 R4 0             // If in_image(x,y) =0
-        18. JR 21                   // Skip the next 2 lines if none of the above are true
-            19. LI R5 0
-            20. SD R3 R5             // Save 0 to memory(R3)= memory(out_image)
-            21. JR 31               // continue
+        15. JEQ R1 R7 21            // If X == 0
+        16. JEQ R2 R7 21            // If Y == 0
+        17. JEQ R1 R6 21            // If X == 19
+        18. JEQ R2 R6 21            // If Y == 19
+        19. JEQ R4 R7 21            // If in_image(x,y) = 0
+        20. JR 23                   // Skip the next 2 lines if none of the above are true
+            21. SD R3 R7            // Save 0 to memory(R3) = memory(out_image)
+            22. JR 41               // continue
         // // Linje (12-19) else
-        22. LI R5 1
-        23. SUB R0 R5               // in_image(x-1,y)
-        24. LD R4 R0                // Stores the value of memory(R0) in R4
-        25. JEQ 19 R4 0             // if (in_image(x-1,y) == 0)
+        23. LI R5 1
+        24. SUB R0 R5               // in_image(x-1,y)
+        25. LD R4 R0                // Stores the value of memory(R0) in R4
+        26. JEQ R4 R7 21            // if (in_image(x-1,y) == 0)
 
-        26. LI R5 2
-        27. ADD R0 R5               // in_image(x+1,y)
-        28. LD R4 R0                // Stores the value of memory(R0) in R4
-        29. JEQ 19 R4 0             // if (in_image(x+1,y) == 0)
+        27. LI R5 2
+        28. ADD R0 R5               // in_image(x+1,y)
+        29. LD R4 R0                // Stores the value of memory(R0) in R4
+        30. JEQ R4 R7 21            // if (in_image(x+1,y) == 0)
 
-        24. SUB R0 R0 21            // in_image(x,y-1)
-        25. LD R4 R0                // Stores the value of R0 in R4
-        26. JEQ 16 R4 0             // if (in_image(x,y-1) == 0)
+        31. LI R5 21
+        32. SUB R0 R5               // in_image(x,y-1)
+        33. LD R4 R0                // Stores the value of memory(R0) in R4
+        34. JEQ R4 R7 21            // if (in_image(x,y-1) == 0)
 
-        27. ADD R0 R0 40            // in_image(x,y+1)
-        28. LD R4 R0                // Stores the value of R0 in R4
-        29. JEQ 16 R4 0             // if (in_image(x,y+1) == 0)
+        35. LI R5 40
+        36. ADD R0 R5               // in_image(x,y+1)
+        37. LD R4 R0                // Stores the value of memory(R0) in R4
+        38. JEQ R4 R7 21            // if (in_image(x,y+1) == 0)
 
         // // Linje 12-20 (else)
-        38. LI R5 255
-        39. SD R3 R5               // Save 255 to memory(R3)= memory(out_image)
+        39. LI R5 255
+        40. SD R3 R5                // Save 255 to memory(R3) = memory(out_image)
 
     // Ending of loop where we increment
-    31. ADD R2 R2 1                 // Add 1 to Y and save it in Y
-    32. JR 4                        // Jumps back to beginning of loop 2
-33. ADD R1 R1 1                     // Add 1 to X and save it in X
-34. JR 2                            // Jumps back to beginning of loop 1
-35. END                             // Finished loopss
+    41. LI R5 1
+    42. ADD R2 R5                   // Y = Y + 1
+    43. JR 6                        // Jumps back to beginning of loop 2
+44. LI R5 1
+45. ADD R1 R5                       // X = X + 1
+46. JR 4                            // Jumps back to beginning of loop 1
+47. END                             // Finished loops
 
 
 
@@ -85,19 +90,19 @@ for (x from 0 to 19) {
 
 *********** LIST OF INSTRUCTIONS **********
 // Arithmetic
-Addition                    ADD R0 R1 R2
-Subtraction                 SUB R0 R1 R2
-Multiplication              MULT R0 R1 R2
-Load immediate              LI R1 R2
-Load data                   LD R1 R2
-Store data                  SD R1 R2
+1 Addition                    ADD R0 R1
+2 Subtraction                 SUB R0 R1
+3 Multiplication              MULT R0 R1
+4 Load immediate              LI R1 Int
+5 Load data                   LD R1 R2
+6 Store data                  SD R1 R2
 
 // Jump type
-Jump                        JR 12
+7 Jump                        JR Int
 
 // Jump Comparison Type
-Jump if greater than        JGT 10 R1 R2
-Jump if equal               JEQ 10 R1 R2
+8 Jump if greater than        JGT R1 R2 Int
+9 Jump if equal               JEQ R1 R2 Int
 
 End program                 END
 *******************************************
@@ -122,6 +127,6 @@ Instruction type: Opcode(4) Instructions(28)
 Depending on the opcode the instruction fields are divided as follows
     R(Register):          R(3)          R(3)        Nothing(22)
     I(Immediate):         R(3)          Immediate(25)
-    J(Jump):              Nothing(3)    Nothing(3)  Target(15)
-    JC(Jump Conditional): R1(3)         R2(3)       Target(15)
+    J(Jump):              Nothing(3)    Nothing(3)  Target(22)
+    JC(Jump Conditional): R1(3)         R2(3)       Target(22)
     S(Store):             R(3)          R(3)        Nothing(22)
