@@ -11,7 +11,7 @@ class ALU extends Module {
     val compResult = Output(Bool())
   })
   io.compResult := false.B
-  io.result := io.operand1
+  io.result := io.operand2
 
   //Implement this module here
   when (io.sel === 1.U) { // Add

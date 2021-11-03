@@ -38,9 +38,11 @@ class ControlUnit extends Module {
     }
     is (4.U) { // LI
       io.loadImmediate := true.B
+      io.writeEnable := true.B
     }
     is (5.U) { // LD
       io.loadMemory := true.B
+      io.writeEnable := true.B
     }
     is (6.U) { // SD
       io.memWrite := true.B

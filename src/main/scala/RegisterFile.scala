@@ -27,31 +27,31 @@ class RegisterFile extends Module {
   io.b := 0.U
 
   switch(io.aSel) {
-    is(0.U) {
+    is (0.U) {
       when (io.writeEnable) {
         R0Reg := io.writeData
       }
       io.a := R0Reg
     }
-    is(1.U) {
+    is (1.U) {
       io.a := R1Reg
       when (io.writeEnable) {
         R1Reg := io.writeData
       }
     }
-    is(2.U) {
+    is (2.U) {
       io.a := R2Reg
       when (io.writeEnable) {
         R2Reg := io.writeData
       }
     }
-    is(3.U) {
+    is (3.U) {
       io.a := R3Reg
       when (io.writeEnable) {
         R3Reg := io.writeData
       }
     }
-    is(4.U) {
+    is (4.U) {
       io.a := R4Reg
       when (io.writeEnable) {
         R4Reg := io.writeData

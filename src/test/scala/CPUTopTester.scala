@@ -29,7 +29,8 @@ class CPUTopTester(dut: CPUTop) extends PeekPokeTester(dut) {
   System.out.print("\nLoading the program memory with instructions... ")
   //Uncomment one of the following line depending on the program you want to load to the program memory
   val program = Programs.program1
-  //val program = Programs.program2
+//  val program = Programs.program2
+
   for( address <- 0 to program.length-1){
     poke(dut.io.testerProgMemEnable, 1)
     poke(dut.io.testerProgMemWriteEnable, 1)
@@ -76,6 +77,7 @@ class CPUTopTester(dut: CPUTop) extends PeekPokeTester(dut) {
     val data = peek(dut.io.testerDataMemDataRead)
     outputImage.add(data.toInt)
     //System.out.println("a:" + i + " d:" + data )
+    if (i == 400) System.out.println("LOCATION 400: " + data)
     step(1)
   }
   poke(dut.io.testerDataMemEnable, 0)
