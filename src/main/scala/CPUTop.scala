@@ -50,8 +50,8 @@ class CPUTop extends Module {
   alu.io.sel := controlUnit.io.aluOp
 
   // Data Memory
-  dataMemory.io.address := registerFile.io.a(15,0)
-  dataMemory.io.dataWrite := registerFile.io.b
+  dataMemory.io.address := registerFile.io.b(15,0)
+  dataMemory.io.dataWrite := registerFile.io.a
   dataMemory.io.writeEnable := controlUnit.io.memWrite
 
   // Register File
@@ -64,10 +64,11 @@ class CPUTop extends Module {
   programCounter.io.jump := controlUnit.io.jump || conditionalJumping
   programCounter.io.programCounterJump := programMemory.io.instructionRead(15, 0)
 
-  when(programCounter.io.programCounter >= 48.U) {
-    programCounter.io.stop := true.B
+  io.done := controlUnit.io.done
+  programCounter.io.stop := io.done
+  /*when(programCounter.io.programCounter >= 48.U) {
     io.done := true.B
-  }
+  }*/
 
   //This signals are used by the tester for loading the program to the program memory, do not touch
   programMemory.io.testerAddress := io.testerProgMemAddress

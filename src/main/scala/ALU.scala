@@ -23,6 +23,6 @@ class ALU extends Module {
   } .elsewhen(io.sel === 4.U) { // JEQ
     io.compResult := io.operand1 - io.operand2 === 0.U
   } .elsewhen(io.sel === 5.U){ // JGT
-    io.compResult := (io.operand1 - io.operand2) > 0.U
+    io.compResult := (io.operand1 > io.operand2)
   }
 }

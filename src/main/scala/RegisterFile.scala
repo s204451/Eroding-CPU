@@ -103,7 +103,6 @@ class RegisterFile extends Module {
       io.b := R7Reg
     }
   }
-
 }
 
 

@@ -12,6 +12,7 @@ class ControlUnit extends Module {
     val jumpConditional = Output(Bool())
     val jump = Output(Bool())
     val loadImmediate = Output(Bool())
+    val done = Output(Bool())
   })
 
   io.aluOp := 0.U
@@ -21,9 +22,13 @@ class ControlUnit extends Module {
   io.jump := false.B
   io.jumpConditional := false.B
   io.loadImmediate := false.B
+  io.done := false.B
 
   //Implement this module here
   switch(io.opcode) {
+    is (0.U) { // END
+      io.done := true.B
+    }
     is (1.U) { // ADD
       io.aluOp := 1.U
       io.writeEnable := true.B
@@ -50,12 +55,12 @@ class ControlUnit extends Module {
     is (7.U) { // JR
       io.jump := true.B
     }
-    is (8.U) { // JEQ
-      io.aluOp := 4.U
+    is (8.U) { // JGT
+      io.aluOp := 5.U
       io.jumpConditional := true.B
     }
-    is (9.U) { // JGT
-      io.aluOp := 5.U
+    is (9.U) { // JEQ
+      io.aluOp := 4.U
       io.jumpConditional := true.B
     }
   }
