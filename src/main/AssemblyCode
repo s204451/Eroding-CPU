@@ -1,126 +1,61 @@
-for (x from 0 to 19) {
-    for (y from 0 to 19) {
-        // Processing border pixel
-        if (x ==0) { out_image (x,y) =0; continue ; }
-        if (y ==0) { out_image (x,y) =0; continue ; }
-        if (x ==19) { out_image (x,y)=0; continue ; }
-        if (y ==19) { out_image (x,y)=0; continue ; }
-        // Processing inner pixel
-        if ( in_image (x,y) ==0) {
-            // Black pixel
-            out_image (x,y) =0;
-        } else {
-            // White pixel , checking neighboring pixels
-            if ( in_image (x -1,y) ==0 or
-                in_image (x+1,y)==0 or
-                in_image (x,y -1) ==0 or
-                in_image (x,y +1) ==0) {
-                // Erode
-                out_image (x,y) =0;
-            } else {
-                // Do not erode
-                out_image (x,y) =255;
-            }
-        }
-    }
-}
-
-1. LI R6 19                         // R6 = 19
-2. LI R7 0                          // R7 = 0
-3. LI R1 0                          // X = 0
-4. JGT R1 R6 46                     // If X > 19 loop ended jump to __
+0. LI R6 19                         // R6 = 19
+1. LI R7 0                          // R7 = 0
+2. LI R1 0                          // X = 0
+3. JGT R1 R6 46                     // If X > 19 loop ended jump to end
     // // Linje 2: loop 2
-    5. LI R2 0                      // Y = 0
-    6. JGT R2 R6 43                 // If Y > 19 loop ended jump to __
+    4. LI R2 0                      // Y = 0
+    5. JGT R2 R6 43                 // If Y > 19 loop ended jump to end of loop
         // Finding the out image and in image
-        7. LI R0 20                 // R0 = 20
-        8. MULT R0 R2               // R0 = 20*y
-        9. ADD R0 R1                // R0 = x+20*y = in_image address
-        10. LI R3 0
-        11. ADD R3 R0               // R3 = 0 + R0 = in_image address
-        12. LI R5 400
-        13. ADD R3 R5               // R3 = x+20*y+400 = out_image address
-        14. LD R4 R0                // R4 = memory(R0 (in_image) )
+        6. LI R0 20                 // R0 = 20
+        7. MULT R0 R2               // R0 = 20*y
+        8. ADD R0 R1                // R0 = x+20*y = in_image address
+        9. LI R3 0
+        10. ADD R3 R0               // R3 = 0 + R0 = in_image address
+        11. LI R5 400
+        12. ADD R3 R5               // R3 = x+20*y+400 = out_image address
+        13. LD R4 R0                // R4 = memory(R0 (in_image) )
         // // Linje 4-11 (If statements)
-        15. JEQ R1 R7 20            // If X == 0
-        16. JEQ R2 R7 20            // If Y == 0
-        17. JEQ R1 R6 20            // If X == 19
-        18. JEQ R2 R6 20            // If Y == 19
-        19. JEQ R4 R7 20            // If in_image(x,y) = 0
-        20. JR 22                   // Skip the next 2 lines if none of the above are true
-            21. SD R7 R3            // Save 0 to memory(R3) = memory(out_image)
-            22. JR 40               // continue
+        14. JEQ R1 R7 20            // If X == 0
+        15. JEQ R2 R7 20            // If Y == 0
+        16. JEQ R1 R6 20            // If X == 19
+        17. JEQ R2 R6 20            // If Y == 19
+        18. JEQ R4 R7 20            // If in_image(x,y) = 0
+        19. JR 22                   // Skip the next 2 lines if none of the above are true
+            20. SD R7 R3            // Save 0 to memory(R3) = memory(out_image)
+            21. JR 40               // continue
         // // Linje (12-19) else
-        23. LI R5 1
-        24. SUB R0 R5               // in_image(x-1,y)
-        25. LD R4 R0                // Stores the value of memory(R0) in R4
-        26. JEQ R4 R7 20            // if (in_image(x-1,y) == 0)
+        22. LI R5 1
+        23. SUB R0 R5               // in_image(x-1,y)
+        24. LD R4 R0                // Stores the value of memory(R0) in R4
+        25. JEQ R4 R7 20            // if (in_image(x-1,y) == 0)
 
-        27. LI R5 2
-        28. ADD R0 R5               // in_image(x+1,y)
-        29. LD R4 R0                // Stores the value of memory(R0) in R4
-        30. JEQ R4 R7 20            // if (in_image(x+1,y) == 0)
+        26. LI R5 2
+        27. ADD R0 R5               // in_image(x+1,y)
+        28. LD R4 R0                // Stores the value of memory(R0) in R4
+        29. JEQ R4 R7 20            // if (in_image(x+1,y) == 0)
 
-        31. LI R5 21
-        32. SUB R0 R5               // in_image(x,y-1)
-        33. LD R4 R0                // Stores the value of memory(R0) in R4
-        34. JEQ R4 R7 20            // if (in_image(x,y-1) == 0)
-
-        35. LI R5 40
-        36. ADD R0 R5               // in_image(x,y+1)
-        37. LD R4 R0                // Stores the value of memory(R0) in R4
-        38. JEQ R4 R7 20            // if (in_image(x,y+1) == 0)
+        30. LI R5 21
+        31. SUB R0 R5               // in_image(x,y-1)
+        32. LD R4 R0                // Stores the value of memory(R0) in R4
+        33. JEQ R4 R7 20            // if (in_image(x,y-1) == 0)
+        
+        34. LI R5 40
+        35. ADD R0 R5               // in_image(x,y+1)
+        36. LD R4 R0                // Stores the value of memory(R0) in R4
+        37. JEQ R4 R7 20            // if (in_image(x,y+1) == 0)
 
         // // Linje 12-20 (else)
-        39. LI R5 255
-        40. SD R5 R3                // Save 255 to memory(R3) = memory(out_image)
+        38. LI R5 255
+        39. SD R5 R3                // Save 255 to memory(R3) = memory(out_image)
 
     // Ending of loop where we increment
-    41. LI R5 1
-    42. ADD R2 R5                   // Y = Y + 1
-    43. JR 5                        // Jumps back to beginning of loop 2
-44. LI R5 1
-45. ADD R1 R5                       // X = X + 1
-46. JR 3                            // Jumps back to beginning of loop 1
-47. END                             // Finished loops
-
-
-
-// TASK 4 //
-
-*********** LIST OF INSTRUCTIONS **********
-// Arithmetic
-1 Addition                    ADD R0 R1
-2 Subtraction                 SUB R0 R1
-3 Multiplication              MULT R0 R1
-4 Load immediate              LI R1 Int
-5 Load data                   LD R1 R2
-6 Store data                  SD R1 R2
-
-// Jump type
-7 Jump                        JR Int
-
-// Jump Comparison Type
-8 Jump if greater than        JGT R1 R2 Int
-9 Jump if equal               JEQ R1 R2 Int
-
-0 End program                 END
-*******************************************
-
-// TASK 4: //
-
-// Nummereret med 2^3
-// R0(9) R1(5) R2(5) R3(10) R4(8) R5(9)
-
-
-// LI R0 R1
-// R0 = R1
-
-// LI R0 100
-// R0 = 100
-// 000010 (LI) 000 (R0) 001 (R1) 010101010101010101
-// 000010 (LI) 000 (R0) 001 (100) 000000000001100 (100)
-
+    40. LI R5 1
+    41. ADD R2 R5                   // Y = Y + 1
+    42. JR 5                        // Jumps back to beginning of loop 2
+43. LI R5 1
+44. ADD R1 R5                       // X = X + 1
+45. JR 3                            // Jumps back to beginning of loop 1
+46. END                             // Finished loops
 
 How is the 32-bit instruction divided:
 Instruction type: Opcode(4) Instructions(28)
