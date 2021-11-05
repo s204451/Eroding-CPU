@@ -51,6 +51,27 @@
 45. JR 3                            // Jumps back to beginning of loop 1
 46. END                             // Finished loops
 
+*********** LIST OF INSTRUCTIONS **********
+// Arithmetic
+1 Addition                    ADD R0 R1
+2 Subtraction                 SUB R0 R1
+3 Multiplication              MULT R0 R1
+
+// Data type
+4 Load immediate              LI R1 Int
+5 Load data                   LD R1 R2
+6 Store data                  SD R1 R2
+
+// Jump type
+7 Jump                        JR Int
+
+// Jump Comparison Type
+8 Jump if greater than        JGT R1 R2 Int
+9 Jump if equal               JEQ R1 R2 Int
+
+0 End program                 END
+*******************************************
+
 How is the 32-bit instruction divided:
 Instruction type: Opcode(4) Instructions(28)
 Depending on the opcode the instruction fields are divided as follows
