@@ -78,5 +78,5 @@ Depending on the opcode the instruction fields are divided as follows
     R(Register):          R(3)          R(3)        Nothing(22)
     I(Immediate):         R(3)          Immediate(25)
     J(Jump):              Nothing(3)    Nothing(3)  Target(22)
-    JC(Jump Conditional): R1(3)         R2(3)       Target(22)
+    JC(Jump Conditional): R(3)          R(3)       Target(22)
     S(Store):             R(3)          R(3)        Nothing(22)
